@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yamaha: Cotización</title>
+
+    <style>
+        /* --- Configuración General --- */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        /* --- TEMA NEGRO Y AMARILLO --- */
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #1a1a1a;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 2rem;
+            color: #f0f0f0;
+        }
+
+        /* --- Contenedor Principal --- */
+        .page-wrapper { display: flex; width: 100%; max-width: 1300px; }
+
+        /* --- Tarjeta Negra Principal --- */
+        .page-container {
+            flex-grow: 1;
+            background-color: #222222;
+            /* CAMBIO: Sin bordes redondeados */
+            border-radius: 0;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            /* CAMBIO: Borde amarillo */
+            border: 2px solid #ffc300;
+        }
+
+        /* --- 1. Encabezado (Amarillo) --- */
+        .main-header {
+            background-color: #ffc300;
+            height: 110px;
+            /* CAMBIO: Sin bordes redondeados */
+            border-radius: 0;
+            padding: 20px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+            z-index: 1;
+            /* CAMBIO: Forma angular */
+            clip-path: polygon(0 0, 100% 0, 100% 85%, 0 100%);
+        }
+
+        /* --- Botones de Navegación del Encabezado --- */
+        .auth-links-left, .auth-links-right { display: flex; gap: 10px; align-items: center; }
+        .auth-btn-left {
+            text-decoration: none;
+            color: #000000;
+            padding: 8px 16px;
+            /* CAMBIO: Sin bordes redondeados */
+            border-radius: 0;
+            font-size: 14px;
+            font-weight: bold;
+            transition: all 0.2s ease;
+            border: 2px solid #000000;
+        }
+        .btn-login-left { background-color: transparent; color: #000000; }
+        .auth-btn-left.btn-login-left:hover { background-color: #000000; color: #ffc300; }
+        
+        /* --- Estilos de Sesión --- */
+        .welcome-message {
+            color: #000000;
+            font-size: 16px;
+            font-weight: bold;
+            white-space: nowrap;
+        }
+        .auth-btn-left.btn-logout {
+            border-color: #d90429;
+            color: #d90429;
+            background-color: transparent;
+        }
+        .auth-btn-left.btn-logout:hover {
+            background-color: #000000;
+            color: #d90429;
+            border-color: #000000;
+        }
+
+        /* --- 2. Área de Contenido (Formulario de Compra) --- */
+        .form-area {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 40px;
+            gap: 20px;
+        }
+        .form-area h2 {
+            text-align: center;
+            color: #ffc300;
+            font-size: 28px;
+        }
+        
+        /* Mensaje de éxito */
+        .success-message {
+            color: #000;
+            background-color: #fff9c4;
+            padding: 20px;
+            /* CAMBIO: Sin bordes redondeados */
+            border-radius: 0;
+            text-align: center;
+            width: 100%;
+            max-width: 600px;
+            display: none;
+        }
+        .success-message h3 { margin-bottom: 10px; }
+        .success-message p { margin-bottom: 20px; font-size: 16px; }
+        .success-message a {
+            background-color: #000000;
+            color: #ffc300;
+            padding: 10px 20px;
+            /* CAMBIO: Sin bordes redondeados */
+            border-radius: 0;
+            text-decoration: none;
+            font-weight: bold;
+            transition: all 0.2s ease;
+        }
+        .success-message a:hover { background-color: #333; }
+
+        .compra-form {
+            width: 100%;
+            max-width: 600px;
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+        }
+        .form-group { display: flex; flex-direction: column; gap: 8px; }
+        .form-group label { font-weight: bold; color: #ccc; }
+        
+        /* CAMBIO: Estilo de línea inferior para inputs */
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            border: none;
+            border-bottom: 2px solid #ffc300;
+            background-color: transparent;
+            color: #fff;
+            padding: 12px 5px;
+            border-radius: 0;
+            font-size: 16px;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            outline: none;
+            background-color: #333;
+        }
+        .form-group textarea { resize: vertical; min-height: 80px; }
+        
+        .form-row { display: flex; gap: 15px; }
+        .form-row .form-group { flex: 1; }
+        
+        .form-group-options { display: flex; flex-direction: column; gap: 10px; }
+        .form-group-options .option {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background-color: #333;
+            padding: 12px;
+            /* CAMBIO: Sin bordes redondeados */
+            border-radius: 0;
+            /* CAMBIO: Borde amarillo */
+            border: 1px solid #ffc300;
+        }
+        .form-group-options input[type="radio"],
+        .form-group-options input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            accent-color: #ffc300;
+        }
+        
+        .compra-button {
+            background-color: #ffc300;
+            color: #000000;
+            border: none;
+            padding: 14px;
+            /* CAMBIO: Sin bordes redondeados */
+            border-radius: 0;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+            margin-top: 15px;
+        }
+        .compra-button:hover { background-color: #ffd60a; }
+
+        /* --- 3. Footer (Amarillo) --- */
+        .main-footer {
+            background-color: #ffc300;
+            height: 80px;
+            /* CAMBIO: Sin bordes redondeados */
+            border-radius: 0;
+            /* CAMBIO: Forma angular */
+            clip-path: polygon(0 15%, 100% 0, 100% 100%, 0 100%);
+        }
+
+        /* --- 4. Barra de Scroll Falsa (ELIMINADA) --- */
+        /* .scroll-track fue eliminado */
+    </style>
+</head>
+<body>
+
+    <div class="page-wrapper">
+        <div class="page-container">
+
+            <!-- 1. Encabezado -->
+            <header class="main-header">
+                <div class="auth-links-left">
+                    <a href="yamaha_index.html" class="auth-btn-left btn-login-left">← Volver al Inicio</a>
+                </div>
+                <div class="auth-links-right" id="auth-container">
+                    <!-- El script de sesión rellena esto -->
+                </div>
+            </header>
+
+            <!-- 2. Contenido Principal -->
+            <main class="form-area">
+                <h2>Formulario de Cotización</h2>
+                
+                <!-- Mensaje de éxito -->
+                <div id="success-message" class="success-message">
+                    <h3>¡Solicitud Enviada!</h3>
+                    <p>Hemos recibido tus datos correctamente. Un asesor se pondrá en contacto contigo a tu correo para finalizar el proceso de cotización.</p>
+                    <a href="yamaha_index.html">Volver al Inicio</a>
+                </div>
+                
+                <form id="compra-form" class="compra-form">
+                    
+                    <div class="form-group">
+                        <label>1. Elige tu MT-15:</label>
+                        <div class="form-group-options">
+                            <label class="option">
+                                <input type="radio" name="modelo" value="mt15_negro" checked>
+                                MT-15 (Negro)
+                            </label>
+                            <label class="option">
+                                <input type="radio" name="modelo" value="mt15_azul">
+                                MT-15 (Azul Racing)
+                            </label>
+                            <label class="option">
+                                <input type="radio" name="modelo" value="mt15_cyan">
+                                MT-15 (Cyan Storm)
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="nombre">2. Nombre Completo:</label>
+                        <input type="text" id="nombre" name="nombre" placeholder="Tu nombre y apellido" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">3. Correo Electrónico:</label>
+                        <input type="email" id="email" name="email" placeholder="tu@correo.com" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="telefono">4. Teléfono de Contacto:</label>
+                        <input type="tel" id="telefono" name="telefono" placeholder="Tu número de celular" required>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="ciudad">5. Ciudad:</label>
+                            <input type="text" id="ciudad" name="ciudad" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="concesionario">6. Concesionario:</label>
+                            <select id="concesionario" name="concesionario" required>
+                                <option value="">Selecciona uno...</option>
+                                <option value="medellin">Yamaha Medellín</option>
+                                <option value="bogota">Yamaha Bogotá</option>
+                                <option value="cali">Yamaha Cali</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>7. ¿Método de pago preferido?</label>
+                        <div class="form-group-options">
+                            <label class="option">
+                                <input type="radio" name="pago" value="contado" checked>
+                                De contado
+                            </label>
+                            <label class="option">
+                                <input type="radio" name="pago" value="financiado">
+                                Financiado
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group-options">
+                        <label class="option">
+                            <input type="checkbox" id="terminos" name="terminos" required>
+                            Acepto la política de tratamiento de datos.
+                        </label>
+                    </div>
+                    
+                    <button type="submit" class="compra-button">Solicitar Cotización</button>
+                    
+                </form>
+            </main>
+
+            <!-- 3. Footer -->
+            <footer class="main-footer"></footer>
+        </div>
+        <!-- CAMBIO: Se eliminó el DIV .scroll-track -->
+    </div>
+
+    <!-- SCRIPT DE SESIÓN (Sin cambios) -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const userName = sessionStorage.getItem('userName');
+            const authContainer = document.getElementById('auth-container');
+            
+            if (userName) {
+                authContainer.innerHTML = `
+                    <span class="welcome-message">Hola, ${userName.trim()}</span>
+                    <a href="#" id="logout-btn" class="auth-btn-left btn-logout">Salir</a>
+                `;
+                document.getElementById('logout-btn').addEventListener('click', function(e) {
+                    e.preventDefault();
+                    sessionStorage.removeItem('userName');
+                    window.location.reload();
+                });
+            } else {
+                authContainer.innerHTML = ''; 
+            }
+        });
+    </script>
+
+    <!-- SCRIPT DEL FORMULARIO (Sin cambios) -->
+    <script>
+        document.getElementById('compra-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const form = document.getElementById('compra-form');
+            const successMessage = document.getElementById('success-message');
+            
+            successMessage.style.display = 'block';
+            form.style.display = 'none';
+            window.scrollTo(0, 0);
+        });
+    </script>
+</body>
+</html>
+

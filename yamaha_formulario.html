@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yamaha: Encuesta</title>
+
+    <style>
+        /* --- Configuración General --- */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        /* --- TEMA NEGRO Y AMARILLO --- */
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #1a1a1a;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 2rem;
+            color: #f0f0f0;
+        }
+
+        /* --- Contenedor Principal --- */
+        .page-wrapper { display: flex; width: 100%; max-width: 1300px; }
+
+        /* --- Tarjeta Negra Principal --- */
+        .page-container {
+            flex-grow: 1;
+            background-color: #222222;
+            /* CAMBIO: Sin bordes redondeados */
+            border-radius: 0;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            /* CAMBIO: Borde amarillo */
+            border: 2px solid #ffc300;
+        }
+
+        /* --- 1. Encabezado (Amarillo) --- */
+        .main-header {
+            background-color: #ffc300;
+            height: 110px;
+            /* CAMBIO: Sin bordes redondeados */
+            border-radius: 0;
+            padding: 20px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+            z-index: 1;
+            /* CAMBIO: Forma angular */
+            clip-path: polygon(0 0, 100% 0, 100% 85%, 0 100%);
+        }
+
+        /* --- Botones de Navegación del Encabezado --- */
+        .auth-links-left, .auth-links-right { display: flex; gap: 10px; align-items: center; }
+        .auth-btn-left {
+            text-decoration: none;
+            color: #000000;
+            padding: 8px 16px;
+            /* CAMBIO: Sin bordes redondeados */
+            border-radius: 0;
+            font-size: 14px;
+            font-weight: bold;
+            transition: all 0.2s ease;
+            border: 2px solid #000000;
+        }
+        .btn-login-left { background-color: transparent; color: #000000; }
+        .auth-btn-left.btn-login-left:hover { background-color: #000000; color: #ffc300; }
+        
+        /* --- Estilos de Sesión --- */
+        .welcome-message {
+            color: #000000;
+            font-size: 16px;
+            font-weight: bold;
+            white-space: nowrap;
+        }
+        .auth-btn-left.btn-logout {
+            border-color: #d90429;
+            color: #d90429;
+            background-color: transparent;
+        }
+        .auth-btn-left.btn-logout:hover {
+            background-color: #000000;
+            color: #d90429;
+            border-color: #000000;
+        }
+
+        /* --- 2. Área de Contenido (Formulario de Encuesta) --- */
+        .form-area {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 40px;
+            gap: 20px;
+        }
+        .form-area h2 {
+            text-align: center;
+            color: #ffc300;
+            font-size: 28px;
+        }
+        
+        /* Mensaje de éxito */
+        .success-message {
+            color: #000;
+            background-color: #fff9c4;
+            padding: 20px;
+            /* CAMBIO: Sin bordes redondeados */
+            border-radius: 0;
+            text-align: center;
+            width: 100%;
+            max-width: 600px;
+            display: none;
+        }
+        .success-message h3 { margin-bottom: 10px; }
+        .success-message a {
+            background-color: #000000;
+            color: #ffc300;
+            padding: 10px 20px;
+            /* CAMBIO: Sin bordes redondeados */
+            border-radius: 0;
+            text-decoration: none;
+            font-weight: bold;
+            transition: all 0.2s ease;
+            margin-top: 15px;
+            display: inline-block;
+        }
+        .success-message a:hover { background-color: #333; }
+
+        .compra-form {
+            width: 100%;
+            max-width: 600px;
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+        }
+        .form-group { display: flex; flex-direction: column; gap: 8px; }
+        .form-group label { font-weight: bold; color: #ccc; }
+        
+        /* CAMBIO: Estilo de línea inferior para inputs */
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            border: none;
+            border-bottom: 2px solid #ffc300;
+            background-color: transparent;
+            color: #fff;
+            padding: 12px 5px;
+            border-radius: 0;
+            font-size: 16px;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            outline: none;
+            background-color: #333;
+        }
+        .form-group textarea { resize: vertical; min-height: 100px; }
+        
+        .form-group-options { display: flex; flex-direction: column; gap: 10px; }
+        .form-group-options .option {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background-color: #333;
+            padding: 12px;
+            /* CAMBIO: Sin bordes redondeados */
+            border-radius: 0;
+            /* CAMBIO: Borde amarillo */
+            border: 1px solid #ffc300;
+        }
+        .form-group-options input[type="radio"],
+        .form-group-options input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            accent-color: #ffc300;
+        }
+        
+        .compra-button {
+            background-color: #ffc300;
+            color: #000000;
+            border: none;
+            padding: 14px;
+            /* CAMBIO: Sin bordes redondeados */
+            border-radius: 0;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+            margin-top: 15px;
+        }
+        .compra-button:hover { background-color: #ffd60a; }
+
+        /* --- 3. Footer (Amarillo) --- */
+        .main-footer {
+            background-color: #ffc300;
+            height: 80px;
+            /* CAMBIO: Sin bordes redondeados */
+            border-radius: 0;
+            /* CAMBIO: Forma angular */
+            clip-path: polygon(0 15%, 100% 0, 100% 100%, 0 100%);
+        }
+
+        /* --- 4. Barra de Scroll Falsa (ELIMINADA) --- */
+        /* .scroll-track fue eliminado */
+    </style>
+</head>
+<body>
+
+    <div class="page-wrapper">
+        <div class="page-container">
+
+            <!-- 1. Encabezado -->
+            <header class="main-header">
+                <div class="auth-links-left">
+                    <a href="yamaha_index.html" class="auth-btn-left btn-login-left">← Volver al Inicio</a>
+                </div>
+                <div class="auth-links-right" id="auth-container">
+                    <!-- El script de sesión rellena esto -->
+                </div>
+            </header>
+
+            <!-- 2. Contenido Principal -->
+            <main class="form-area">
+                <h2>Encuesta de Satisfacción</h2>
+
+                <!-- Mensaje de éxito -->
+                <div id="success-message" class="success-message">
+                    <h3>¡Gracias por tu opinión!</h3>
+                    <p>Tus respuestas han sido enviadas y nos ayudarán a mejorar.</p>
+                    <a href="yamaha_index.html">Volver al Inicio</a>
+                </div>
+                
+                <form id="compra-form" class="compra-form">
+                    
+                    <div class="form-group">
+                        <label>1. ¿Cómo calificarías el diseño de la MT-15?</label>
+                        <div class="form-group-options">
+                            <label class="option"><input type="radio" name="diseno" value="5"> Excelente</label>
+                            <label class="option"><input type="radio" name="diseno" value="4"> Bueno</label>
+                            <label class="option"><input type="radio" name="diseno" value="3"> Regular</label>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="modelo-favorito">2. ¿Cuál es tu modelo favorito de la serie MT?</label>
+                        <select id="modelo-favorito" name="modelo-favorito" required>
+                            <option value="">Selecciona uno...</option>
+                            <option value="mt03">MT-03</option>
+                            <option value="mt07">MT-07</option>
+                            <option value="mt09">MT-09</option>
+                            <option value="mt10">MT-10</option>
+                            <option value="mt15">MT-15</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>3. ¿Qué características te interesan más? (Marca varias)</label>
+                        <div class="form-group-options">
+                            <label class="option"><input type="checkbox" name="extra" value="potencia"> Potencia del Motor</label>
+                            <label class="option"><input type="checkbox" name="extra" value="diseno"> Diseño Agresivo</label>
+                            <label class="option"><input type="checkbox" name="extra" value="tecnologia"> Tecnología (VVA, ABS)</label>
+                            <label class="option"><input type="checkbox" name="extra" value="precio"> Precio</label>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="comentarios">4. ¿Qué otra moto te gustaría ver en nuestra página?</label>
+                        <textarea id="comentarios" name="comentarios" placeholder="Escribe tus sugerencias aquí..."></textarea>
+                    </div>
+                    
+                    <button type="submit" class="compra-button">Enviar Encuesta</button>
+                    
+                </form>
+            </main>
+
+            <!-- 3. Footer -->
+            <footer class="main-footer"></footer>
+        </div>
+        <!-- CAMBIO: Se eliminó el DIV .scroll-track -->
+    </div>
+
+    <!-- SCRIPT DE SESIÓN (Sin cambios) -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const userName = sessionStorage.getItem('userName');
+            const authContainer = document.getElementById('auth-container');
+            
+            if (userName) {
+                authContainer.innerHTML = `
+                    <span class="welcome-message">Hola, ${userName.trim()}</span>
+                    <a href="#" id="logout-btn" class="auth-btn-left btn-logout">Salir</a>
+                `;
+                document.getElementById('logout-btn').addEventListener('click', function(e) {
+                    e.preventDefault();
+                    sessionStorage.removeItem('userName');
+                    window.location.reload();
+                });
+            } else {
+                authContainer.innerHTML = ''; 
+            }
+        });
+    </script>
+
+    <!-- SCRIPT DEL FORMULARIO (Sin cambios) -->
+    <script>
+        document.getElementById('compra-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const form = document.getElementById('compra-form');
+            const successMessage = document.getElementById('success-message');
+            
+            successMessage.style.display = 'block';
+            form.style.display = 'none';
+            window.scrollTo(0, 0);
+        });
+    </script>
+</body>
+</html>
+

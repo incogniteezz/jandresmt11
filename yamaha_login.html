@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yamaha: Inicio de Sesión</title>
+
+    <style>
+        /* --- Configuración General --- */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        /* --- TEMA NEGRO Y AMARILLO --- */
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #1a1a1a;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 2rem;
+            color: #f0f0f0;
+        }
+
+        /* --- Contenedor Principal --- */
+        .page-wrapper { display: flex; width: 100%; max-width: 1300px; }
+
+        /* --- Tarjeta Negra Principal --- */
+        .page-container {
+            flex-grow: 1;
+            background-color: #222222;
+            /* CAMBIO: Sin bordes redondeados */
+            border-radius: 0;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            /* CAMBIO: Borde amarillo */
+            border: 2px solid #ffc300;
+        }
+
+        /* --- 1. Encabezado (Amarillo) --- */
+        .main-header {
+            background-color: #ffc300;
+            height: 110px;
+            /* CAMBIO: Sin bordes redondeados */
+            border-radius: 0;
+            padding: 20px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+            z-index: 1;
+            /* CAMBIO: Forma angular */
+            clip-path: polygon(0 0, 100% 0, 100% 85%, 0 100%);
+        }
+
+        /* --- Botones de Navegación del Encabezado --- */
+        .auth-links-left, .auth-links-right { display: flex; gap: 10px; }
+
+        .auth-btn-left {
+            text-decoration: none;
+            color: #000000;
+            padding: 8px 16px;
+            /* CAMBIO: Sin bordes redondeados */
+            border-radius: 0;
+            font-size: 14px;
+            font-weight: bold;
+            transition: all 0.2s ease;
+            border: 2px solid #000000;
+        }
+        .btn-register-left {
+            background-color: #000000;
+            color: #ffc300;
+        }
+        .btn-login-left { background-color: transparent; color: #000000; }
+        .auth-btn-left.btn-register-left:hover { background-color: #333; border-color: #333; }
+        .auth-btn-left.btn-login-left:hover { background-color: #000000; color: #ffc300; }
+
+
+        /* --- 2. Área de Contenido (Formulario de Login) --- */
+        .login-area {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 40px;
+            min-height: 400px; /* Asegura altura mínima */
+        }
+        .login-form {
+            width: 100%;
+            max-width: 400px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        .login-form h2 {
+            text-align: center;
+            color: #ffc300;
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+        .error-message {
+            color: #000;
+            background-color: #fca5a5;
+            padding: 10px 15px;
+            /* CAMBIO: Sin bordes redondeados */
+            border-radius: 0;
+            text-align: center;
+            font-weight: bold;
+            display: none;
+        }
+        .form-group { display: flex; flex-direction: column; }
+        .form-group label {
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #ccc;
+        }
+        .form-group input {
+            /* CAMBIO: Estilo de línea inferior */
+            border: none;
+            border-bottom: 2px solid #ffc300;
+            background-color: transparent;
+            color: #fff;
+            padding: 12px 5px; /* Menos padding lateral */
+            border-radius: 0;
+            font-size: 16px;
+        }
+        .form-group input:focus {
+            outline: none;
+            background-color: #333; /* Fondo al enfocar */
+        }
+        
+        .login-button {
+            background-color: #ffc300;
+            color: #000000;
+            border: none;
+            padding: 14px;
+            /* CAMBIO: Sin bordes redondeados */
+            border-radius: 0;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+            margin-top: 10px;
+        }
+        .login-button:hover { background-color: #ffd60a; }
+        .form-links {
+            display: flex;
+            justify-content: space-between;
+            font-size: 14px;
+            margin-top: 5px;
+        }
+        .form-links a { color: #ffc300; text-decoration: none; }
+        .form-links a:hover { text-decoration: underline; }
+        
+        /* --- 3. Footer (Amarillo) --- */
+        .main-footer {
+            background-color: #ffc300;
+            height: 80px;
+            /* CAMBIO: Sin bordes redondeados */
+            border-radius: 0;
+            /* CAMBIO: Forma angular */
+            clip-path: polygon(0 15%, 100% 0, 100% 100%, 0 100%);
+        }
+
+        /* --- 4. Barra de Scroll Falsa (ELIMINADA) --- */
+        /* .scroll-track fue eliminado */
+        
+    </style>
+</head>
+<body>
+
+    <div class="page-wrapper">
+        <div class="page-container">
+
+            <!-- 1. Encabezado -->
+            <header class="main-header">
+                <div class="auth-links-left">
+                    <a href="yamaha_index.html" class="auth-btn-left btn-login-left">← Volver</a>
+                </div>
+                <div class="auth-links-right">
+                    <a href="yamaha_registro.html" class="auth-btn-left btn-register-left">Registrarse</a>
+                </div>
+            </header>
+
+            <!-- 2. Formulario de Login -->
+            <main class="login-area">
+                <form id="login-form" class="login-form">
+                    <h2>Iniciar Sesión</h2>
+                    <div id="error-message" class="error-message"></div>
+                    <div class="form-group">
+                        <label for="email">Correo Electrónico</label>
+                        <input type="email" id="email" name="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Contraseña</label>
+                        <input type="password" id="password" name="password" required>
+                    </div>
+                    <button type="submit" class="login-button">Entrar</button>
+                    <div class="form-links">
+                        <a href="#">¿Olvidaste tu contraseña?</a>
+                        <a href="yamaha_registro.html">¿No tienes cuenta? Regístrate</a>
+                    </div>
+                </form>
+            </main>
+
+            <!-- 3. Footer -->
+            <footer class="main-footer"></footer>
+        </div>
+        
+        <!-- CAMBIO: Se eliminó el DIV .scroll-track -->
+    </div>
+
+    <!-- SCRIPT DE LOGIN (Sin cambios) -->
+    <script>
+        document.getElementById('login-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const errorMessage = document.getElementById('error-message');
+            
+            if (email && password === "12345") {
+                const nombreUsuario = email.split('@')[0];
+                sessionStorage.setItem('userName', nombreUsuario);
+                window.location.href = 'yamaha_index.html';
+            } else {
+                errorMessage.textContent = 'Correo o contraseña incorrectos.';
+                errorMessage.style.display = 'block'; 
+            }
+        });
+    </script>
+</body>
+</html>
+

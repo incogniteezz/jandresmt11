@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yamaha MT-15 | Dark Side of Japan</title>
+
+    <style>
+        /* --- Configuración General --- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* --- TEMA NEGRO Y AMARILLO (Agresivo) --- */
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #1a1a1a;
+            display: flex; 
+            flex-direction: column; 
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 2rem;
+            color: #f0f0f0;
+        }
+
+        /* --- Barra de Búsqueda Externa --- */
+        .external-search-bar {
+            background-color: #ffffff;
+            /* CAMBIO: Sin bordes redondeados */
+            border-radius: 0;
+            padding: 8px 12px;
+            display: flex;
+            align-items: center;
+            width: 100%;
+            max-width: 350px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 1.5rem;
+        }
+        .external-search-bar .search-submit-btn {
+            background: none; border: none; padding: 0;
+            margin-right: 8px; cursor: pointer; display: flex;
+            align-items: center;
+        }
+        .external-search-bar .search-submit-btn img {
+            width: 18px; height: 18px; opacity: 0.6;
+        }
+        .external-search-bar input {
+            border: none; outline: none; font-size: 14px;
+            background: transparent; width: 100%;
+        }
+
+        /* --- Contenedor Principal (Ahora solo envuelve la tarjeta) --- */
+        .page-wrapper {
+            display: flex;
+            width: 100%;
+            max-width: 1300px;
+        }
+
+        /* --- Tarjeta Negra Principal --- */
+        .page-container {
+            flex-grow: 1;
+            background-color: #222222;
+            /* CAMBIO: Sin bordes redondeados */
+            border-radius: 0;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            /* CAMBIO: Borde amarillo solicitado */
+            border: 2px solid #ffc300;
+        }
+
+        /* --- 1. Encabezado (Mancha Amarilla - Angular) --- */
+        .main-header {
+            background-color: #ffc300;
+            height: 110px; /* Un poco más bajo */
+            /* CAMBIO: Sin bordes redondeados */
+            border-radius: 0;
+            padding: 20px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+            z-index: 1;
+            /* CAMBIO: Forma angular agresiva */
+            clip-path: polygon(0 0, 100% 0, 100% 85%, 0 100%);
+        }
+
+        /* --- Botones de Sesión (ahora sobre amarillo) --- */
+        .auth-links-left {
+            display: flex;
+            gap: 10px;
+        }
+        .auth-links-right {
+             display: flex;
+             align-items: center;
+             gap: 15px;
+        }
+        .auth-btn-left {
+            text-decoration: none;
+            color: #000000;
+            padding: 8px 16px;
+            /* CAMBIO: Sin bordes redondeados */
+            border-radius: 0;
+            font-size: 14px;
+            font-weight: bold;
+            transition: all 0.2s ease;
+            border: 2px solid #000000;
+        }
+        .btn-register-left {
+            background-color: #000000;
+            color: #ffc300;
+        }
+        .btn-login-left {
+             background-color: transparent;
+             color: #000000;
+        }
+        .auth-btn-left.btn-register-left:hover {
+            background-color: #333;
+            border-color: #333;
+        }
+        .auth-btn-left.btn-login-left:hover {
+            background-color: #000000;
+            color: #ffc300;
+        }
+        
+        /* --- Estilos de Sesión (Saludo y Salir) --- */
+        #auth-container-right .welcome-message {
+            color: #000000;
+            font-size: 16px;
+            font-weight: bold;
+            white-space: nowrap;
+        }
+        .auth-btn-left.btn-logout {
+            border-color: #d90429;
+            color: #d90429;
+            background-color: transparent;
+        }
+        .auth-btn-left.btn-logout:hover {
+            background-color: #000000;
+            color: #d90429;
+            border-color: #000000;
+        }
+
+        /* --- 2. Área de Contenido Principal --- */
+        .content-area {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            padding: 0;
+        }
+
+        /* --- A. IMAGEN ARRIBA (Hero) --- */
+        .product-showcase {
+            width: 100%;
+            max-height: 450px;
+            background-color: #333;
+            border-radius: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+        .product-showcase img {
+            width: 100%;
+            height: auto;
+            object-fit: cover;
+            filter: drop-shadow(0 10px 15px rgba(0, 0, 0, 0.5));
+        }
+        
+        /* --- B. CONTENIDO ABAJO (Split) --- */
+        .info-wrapper {
+            display: grid;
+            grid-template-columns: 1.2fr 1fr;
+            gap: 30px;
+            padding: 40px;
+        }
+        
+        /* Columna Izquierda: Info y Botón de Cotizar */
+        .product-info-col {
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+        .product-info-col h1 {
+            font-size: 48px;
+            line-height: 1.1;
+            color: #ffc300;
+        }
+        .product-info-col p {
+            font-size: 16px;
+            line-height: 1.6;
+            color: #f0f0f0;
+        }
+        .buy-now {
+            background-color: #ffc300;
+            color: #000000;
+            border: none;
+            /* CAMBIO: Sin bordes redondeados */
+            border-radius: 0;
+            padding: 14px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            text-align: center;
+            transition: background-color 0.2s ease;
+            text-decoration: none;
+            max-width: 300px;
+        }
+        .buy-now:hover {
+            background-color: #ffd60a;
+        }
+
+        /* Columna Derecha: Botones de Acción */
+        .action-buttons-col {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            min-height: 200px;
+        }
+        
+        /* Estilo del BOTÓN (Enlace) */
+        .action-btn {
+            /* CAMBIO: Sin bordes redondeados */
+            border-radius: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-decoration: none;
+            flex-grow: 1;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            overflow: hidden;
+            background-color: #333;
+        }
+        .action-btn:hover {
+            transform: scale(1.03);
+            box-shadow: 0 8px 20px rgba(255, 195, 0, 0.15);
+        }
+        .action-btn img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        /* Estilo del CONTENEDOR DE IMAGEN (Estático) */
+        .static-image-container {
+            /* CAMBIO: Sin bordes redondeados */
+            border-radius: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-grow: 1;
+            overflow: hidden;
+            background-color: #333;
+        }
+        .static-image-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* --- 3. Footer (Amarillo - Angular) --- */
+        .main-footer {
+            background-color: #ffc300;
+            min-height: 80px;
+            /* CAMBIO: Sin bordes redondeados */
+            border-radius: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px 40px;
+             /* CAMBIO: Forma angular que coincide con el header */
+            clip-path: polygon(0 15%, 100% 0, 100% 100%, 0 100%);
+        }
+        
+        /* Estilos de la navegación en el Footer */
+        .main-nav {
+            display: flex;
+            gap: 12px;
+        }
+        .main-nav a {
+            text-decoration: none;
+            color: #ffc300;
+            background-color: #000000;
+            padding: 10px 22px;
+            /* CAMBIO: Sin bordes redondeados */
+            border-radius: 0;
+            font-size: 14px;
+            font-weight: bold;
+            transition: all 0.2s ease;
+        }
+        .main-nav a:hover {
+            background-color: #333;
+            color: #ffffff;
+            transform: translateY(-2px);
+        }
+
+        /* --- 4. Barra de Scroll Falsa (ELIMINADA) --- */
+        /* Se eliminó el estilo .scroll-track */
+
+    </style>
+</head>
+<body>
+
+   
+
+    <div class="page-wrapper">
+
+        <div class="page-container">
+
+            <!-- Encabezado (SOLO SESIÓN) -->
+            <header class="main-header">
+                
+                <!-- Lógica de Sesión (Funcionalidad intacta) -->
+                <div class="auth-links-left" id="auth-container-left">
+                    <!-- JS pondrá "Iniciar Sesión" y "Registrarse" aquí -->
+                </div>
+
+                <div class="auth-links-right">
+                    <div id="auth-container-right">
+                        <!-- JS pondrá "Hola, [Nombre]" y "Salir" aquí -->
+                    </div>
+                </div>
+            </header>
+
+            <!-- CONTENIDO (DISEÑO NUEVO) -->
+            <main class="content-area">
+
+                <!-- A. IMAGEN ARRIBA (Hero) -->
+                <section class="product-showcase">
+                    <!-- (Placeholder) Reemplaza con tu imagen de la MT-15 -->
+                    <img src="https://images.unsplash.com/photo-1695013147209-1516a20f0cdd?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8eWFtYWhhJTIwbXQxNXxlbnwwfHwwfHx8MA%3D%3D&fm=jpg&q=60&w=3000" alt="Moto Yamaha MT-15">
+                </section>
+
+                <!-- B. CONTENIDO ABAJO (Split) -->
+                <div class="info-wrapper">
+                    
+                    <!-- Columna Izquierda: Info y Cotizar -->
+                    <aside class="product-info-col">
+                        <h1>YAMAHA MT-15</h1>
+                        <p>La MT-15, con su motor de 155cc refrigerado por líquido, VVA (Variable Valve Actuation) y chasis Deltabox, es la puerta de entrada al "Lado Oscuro de Japón". Agresividad, tecnología y agilidad pura.</p>
+                        
+                        <!-- Botón de compra (apunta a yamaha_compra.html) -->
+                        <a href="yamaha_compra.html" class="buy-now">COTIZA AHORA</a>
+                    </aside>
+                    
+                    <!-- Columna Derecha: Botones de Acción -->
+                    <aside class="action-buttons-col">
+                        
+                        <!-- 1. Botón de Especificaciones (Enlace funcional) -->
+                        <a href="https://www.incolmotos-yamaha.com.co/vehiculo/mt152024/23334/" class="action-btn" target="_blank" rel="noopener noreferrer">
+                            <img src="https://placehold.co/300x150/333333/ffc300?text=Especificaciones" alt="Especificaciones MT-15">
+                        </a>
+                        
+                        <!-- 2. Botón de Galería (Imagen estática) -->
+                        <div class="static-image-container">
+                            <img src="H13bdfbbc7460410bbbd84dfa52cd5530F.avif" alt="Galería MT-15">
+                        </div>
+                        
+                    </aside>
+                </div>
+
+            </main>
+
+            <!-- Footer (CON NAVEGACIÓN) -->
+            <footer class="main-footer">
+                <nav class="main-nav" id="main-nav">
+                    <a href="yamaha_formulario.html">Formulario</a>
+                    <a href="https://www.yamaha-motor.com.co/" target="_blank" rel="noopener noreferrer">otros</a>
+                </nav>
+            </footer>
+        </div>
+
+        <!-- CAMBIO: Se eliminó el DIV .scroll-track -->
+
+    </div>
+
+    <!-- ===== SCRIPT DE SESIÓN (Sin cambios, ya apunta a yamaha_*) ===== -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const userName = sessionStorage.getItem('userName');
+            const authLeft = document.getElementById('auth-container-left');
+            const authRight = document.getElementById('auth-container-right');
+            
+            if (userName) {
+                authLeft.innerHTML = ''; 
+                authRight.innerHTML = `
+                    <span class="welcome-message">Hola, ${userName.trim()}</span>
+                    <a href="#" id="logout-btn" class="auth-btn-left btn-logout">Salir</a>
+                `;
+                
+                document.getElementById('logout-btn').addEventListener('click', function(e) {
+                    e.preventDefault();
+                    sessionStorage.removeItem('userName');
+                    window.location.reload();
+                });
+            } else {
+                authLeft.innerHTML = `
+                    <a href="yamaha_login.html" class="auth-btn-left btn-login-left">Iniciar Sesión</a>
+                    <a href="yamaha_registro.html" class="auth-btn-left btn-register-left">Registrarse</a>
+                `;
+                authRight.innerHTML = '';
+            }
+        });
+    </script>
+    <!-- ===== FIN SCRIPT ===== -->
+
+</body>
+</html>
+
